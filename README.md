@@ -63,6 +63,7 @@ To run the docker immage
     docker-compose up -d
     docker run -p 3000:3000 fhir_omop
 
+Example FHIR buddle are given to check the installation. 
     
    
     
