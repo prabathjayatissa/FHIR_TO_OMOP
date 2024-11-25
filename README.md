@@ -65,6 +65,14 @@ To run the docker immage
 
 Example FHIR buddle are given to check the installation. 
     
-   
+    AMedicationDispenseBundle.json
+    CompleteDischageSummary.json
+    DiagnosticreportBudle.json
+    EncounterMultipleDiagnosis.json
+    ImmunizationBudle.json
+    MinimalPatientandObservationBundle.json
+    SearchsetBundle.json
+    TransactionBundle.json
+    simpleCollectionBundle.json
     
 
