@@ -253,6 +253,7 @@ export const FhirBundleSchema = z.object({
   })).min(1)
 });
 
+
 // Type exports
 export type FhirPatient = z.infer<typeof FhirPatientSchema>;
 export type FhirCondition = z.infer<typeof FhirConditionSchema>;
