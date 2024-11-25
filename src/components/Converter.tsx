@@ -1,5 +1,8 @@
-import { useState } from 'react';
-import { Container, Typography, Box, Button } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Container, Typography, Box, Button, TextField, MenuItem } from '@mui/material';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import SettingsIcon from '@mui/icons-material/Settings';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { JsonEditor } from './JsonEditor';
 import { ConversionStatus } from './ConversionStatus';
 import { ActionButtons } from './ActionButtons';
@@ -9,9 +12,24 @@ import { FhirToOmopConverter } from '../converter';
 import { setupDatabase } from '../database';
 import { FhirBundleSchema } from '../models/fhir';
 import { useAuth } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { downloadJson } from '../utils/file';
+import { fetchFhirData } from '../services/fhir';
+import { useFhirConfig } from '../hooks/useFhirConfig';
 import { sampleFhirData } from '../sample-data';
+
+const RESOURCE_TYPES = [
+  'Patient',
+  'Condition',
+  'Observation',
+  'Procedure',
+  'MedicationRequest',
+  'MedicationDispense',
+  'Encounter',
+  'DiagnosticReport',
+  'AllergyIntolerance',
+  'Immunization'
+] as const;
+
+type ResourceType = typeof RESOURCE_TYPES[number];
 
 export function Converter() {
   const [fhirInput, setFhirInput] = useState('');
@@ -19,8 +37,19 @@ export function Converter() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [jsonError, setJsonError] = useState('');
+  const [resourceType, setResourceType] = useState<ResourceType>('Patient');
+  const [resourceId, setResourceId] = useState('');
+  const [fetchLoading, setFetchLoading] = useState(false);
   const { logout } = useAuth();
   const navigate = useNavigate();
+  const { config, loading: configLoading } = useFhirConfig();
+
+  useEffect(() => {
+    const savedConfig = localStorage.getItem('fhirConfig');
+    if (!savedConfig) {
+      navigate('/fhir-config');
+    }
+  }, [navigate]);
 
   const handleLogout = async () => {
     try {
@@ -72,13 +101,49 @@ export function Converter() {
     setJsonError('');
   };
 
-  const handleFileUpload = (content: string) => {
-    handleInputChange(content);
-  };
+  const handleFetchFromApi = async () => {
+    try {
+      setFetchLoading(true);
+      setError('');
+      
+      let mainResource;
+      if (resourceId) {
+        // Fetch specific resource by ID
+        mainResource = await fetchFhirData(config, resourceType, resourceId);
+      } else {
+        // Fetch all resources of the specified type (limited to 10)
+        mainResource = await fetchFhirData(config, resourceType, undefined, '_count=10');
+      }
+      
+      // If it's a Patient resource and we have an ID, fetch related resources
+      const relatedResources: { entry: Array<{ resource: unknown }> } = { entry: [] };
+      if (resourceType === 'Patient' && resourceId) {
+        const types = RESOURCE_TYPES.filter(type => type !== 'Patient');
+        const fetchPromises = types.map(type => 
+          fetchFhirData(config, type, undefined, `patient=${resourceId}&_count=5`)
+            .catch(() => ({ entry: [] })) // Ignore errors for related resources
+        );
+        
+        const results = await Promise.all(fetchPromises);
+        relatedResources.entry = results.flatMap(result => result.entry || []);
+      }
 
-  const handleDownload = () => {
-    if (omopOutput) {
-      downloadJson(JSON.parse(omopOutput), 'omop-output.json');
+      // Combine all resources into a single bundle
+      const bundle = {
+        resourceType: 'Bundle',
+        type: 'collection',
+        entry: [
+          ...(mainResource.entry || [{ resource: mainResource }]),
+          ...relatedResources.entry
+        ].filter(entry => entry.resource) // Filter out any invalid entries
+      };
+
+      setFhirInput(JSON.stringify(bundle, null, 2));
+      setJsonError('');
+    } catch (err) {
+      setError('Failed to fetch from FHIR API: ' + (err instanceof Error ? err.message : String(err)));
+    } finally {
+      setFetchLoading(false);
     }
   };
 
@@ -88,14 +153,71 @@ export function Converter() {
         <Typography variant="h4" component="h1">
           FHIR to OMOP Converter
         </Typography>
-        <Button variant="outlined" onClick={handleLogout}>
-          Log Out
-        </Button>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button
+            component={RouterLink}
+            to="/fhir-config"
+            startIcon={<SettingsIcon />}
+            variant="outlined"
+          >
+            FHIR Settings
+          </Button>
+          <Button variant="outlined" onClick={handleLogout}>
+            Log Out
+          </Button>
+        </Box>
+      </Box>
+
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h6" gutterBottom>
+          Fetch from FHIR API
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+          <TextField
+            select
+            label="Resource Type"
+            value={resourceType}
+            onChange={(e) => setResourceType(e.target.value as ResourceType)}
+            sx={{ minWidth: 200 }}
+          >
+            {RESOURCE_TYPES.map((type) => (
+              <MenuItem key={type} value={type}>
+                {type}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label="Resource ID"
+            value={resourceId}
+            onChange={(e) => setResourceId(e.target.value)}
+            helperText="Leave empty to fetch multiple resources"
+          />
+          <Button
+            variant="contained"
+            startIcon={<CloudDownloadIcon />}
+            onClick={handleFetchFromApi}
+            disabled={fetchLoading || configLoading || !config.baseUrl}
+          >
+            {fetchLoading ? 'Fetching...' : 'Fetch'}
+          </Button>
+        </Box>
       </Box>
       
       <FileOperations
-        onFileUpload={handleFileUpload}
-        onDownload={handleDownload}
+        onFileUpload={handleInputChange}
+        onDownload={() => {
+          if (omopOutput) {
+            const blob = new Blob([omopOutput], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'omop-output.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }
+        }}
         hasOutput={!!omopOutput}
       />
       
@@ -111,7 +233,7 @@ export function Converter() {
           value={fhirInput}
           onChange={handleInputChange}
           error={jsonError}
-          placeholder="Paste your FHIR resources in JSON format or click 'Reset to Sample' to load sample data"
+          placeholder="Paste your FHIR resources in JSON format, click 'Reset to Sample' to load sample data, or use the FHIR API fetch above"
         />
         <JsonEditor
           label="OMOP CDM Output"

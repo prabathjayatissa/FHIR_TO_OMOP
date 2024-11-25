@@ -6,6 +6,7 @@ import { Register } from './components/Register';
 import { ForgotPassword } from './components/ForgotPassword';
 import { ResetPassword } from './components/ResetPassword';
 import { Converter } from './components/Converter';
+import { FhirConfig } from './components/FhirConfig';
 import { useAuth } from './contexts/AuthContext';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
@@ -22,6 +23,14 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route 
+            path="/fhir-config" 
+            element={
+              <PrivateRoute>
+                <FhirConfig />
+              </PrivateRoute>
+            } 
+          />
           <Route 
             path="/converter" 
             element={
