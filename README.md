@@ -33,10 +33,6 @@ Key features:
     Add schemas for other FHIR resources
     Implement vocabulary mapping service
 
-To run:
-
-    Tests: npm test
-    Program: npm start
 
 Added a modern React-based UI with Material-UI components that includes:
 
@@ -55,6 +51,10 @@ Edit FHIR patient data in JSON format
     View the conversion results
     Reset to sample data if needed
     See any validation errors or conversion issues
+To run:
+
+    Tests: npm test
+    Program: npm start
 
 To run the docker immage
     
