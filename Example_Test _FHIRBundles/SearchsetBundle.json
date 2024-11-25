@@ -1,0 +1,46 @@
+{
+    "resourceType": "Bundle",
+    "type": "searchset",
+    "total": 2,
+    "entry": [
+      {
+        "fullUrl": "http://example.com/Patient/patient4",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "patient4",
+          "name": [
+            {
+              "use": "official",
+              "family": "Taylor",
+              "given": ["James"]
+            }
+          ],
+          "gender": "male",
+          "birthDate": "1980-04-10"
+        },
+        "search": {
+          "mode": "match"
+        }
+      },
+      {
+        "fullUrl": "http://example.com/Patient/patient5",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "patient5",
+          "name": [
+            {
+              "use": "official",
+              "family": "Wilson",
+              "given": ["Olivia"]
+            }
+          ],
+          "gender": "female",
+          "birthDate": "1995-07-08"
+        },
+        "search": {
+          "mode": "match"
+        }
+      }
+    ]
+  }
+  
