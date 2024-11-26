@@ -126,5 +126,8 @@ Example FHIR buddles are given to check the installation.
     SearchsetBundle.json
     TransactionBundle.json
     simpleCollectionBundle.json
+
+To learn Typescript follow https://basarat.gitbook.io/typescript/getting-started
+
     
 
