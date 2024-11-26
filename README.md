@@ -14,6 +14,7 @@ Created a modular Node.js/TypeScript program that converts FHIR data to OMOP CDM
 User Registration:
 
   Email and password registration
+  
   Password confirmation
   Error handling
   Navigation to converter after successful registration
