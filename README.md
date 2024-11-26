@@ -9,8 +9,36 @@ FHIR to OMOP Conversion
 ![Screenshot 2024-11-25 at 09 53 55](https://github.com/user-attachments/assets/fc56c203-3f4b-417d-a020-432d1fff898a)
 
 
-
 Created a modular Node.js/TypeScript program that converts FHIR data to OMOP CDM format.
+
+User Registration:
+
+Email and password registration
+Password confirmation
+Error handling
+Navigation to converter after successful registration
+Forgot Password:
+
+Email input for password reset
+Success/error messages
+Link back to login
+Reset Password:
+
+New password and confirmation inputs
+Handles reset token from URL
+Redirects to login after successful reset
+Enhanced Login:
+
+Added links to registration and forgot password
+Improved error handling
+Better UI/UX with Material-UI components
+Updated Auth Context:
+
+Added password reset functions
+Improved type safety
+Better error handling
+The application now has a complete authentication flow with proper validation and error handling. Users can register, login, reset their password, and securely access the converter.
+
 
 Here's what each file does:
   
@@ -21,7 +49,6 @@ Here's what each file does:
  * src/__tests__/converter.test.ts: Unit tests for the converter
 
 Key features:
-
     Type safety with TypeScript
     Data validation using Zod
     SQLite database with Knex.js ORM
@@ -46,7 +73,6 @@ Added a modern React-based UI with Material-UI components that includes:
     The UI allows you to:
 
 Edit FHIR patient data in JSON format
-
     Convert it to OMOP format with a single click
     View the conversion results
     Reset to sample data if needed
