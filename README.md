@@ -65,16 +65,26 @@ Here's what each file does:
  * src/__tests__/converter.test.ts: Unit tests for the converter
 
 Key features:
-    Type safety with TypeScript
-    Data validation using Zod
-    SQLite database with Knex.js ORM
-    Unit testing with Vitest
-    Modular design for easy expansion
-    Currently implements Patient → Person conversion. To extend:
-    Add more OMOP tables in database.ts
-    Create new conversion methods in converter.ts
-    Add schemas for other FHIR resources
-    Implement vocabulary mapping service
+    
+  Type safety with TypeScript
+  
+  Data validation using Zod
+  
+  SQLite database with Knex.js ORM
+  
+  Unit testing with Vitest
+  
+  Modular design for easy expansion
+  
+  Currently implements Patient → Person conversion. To extend:
+  
+  Add more OMOP tables in database.ts
+  
+  Create new conversion methods in converter.ts
+  
+  Add schemas for other FHIR resources
+  
+  Implement vocabulary mapping service
 
 
 Added a modern React-based UI with Material-UI components that includes:
