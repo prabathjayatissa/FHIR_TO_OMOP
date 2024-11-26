@@ -66,25 +66,25 @@ Here's what each file does:
 
 Key features:
     
-  Type safety with TypeScript
+  * Type safety with TypeScript
   
-  Data validation using Zod
+  * Data validation using Zod
   
-  SQLite database with Knex.js ORM
+  * SQLite database with Knex.js ORM
   
-  Unit testing with Vitest
+  * Unit testing with Vitest
   
-  Modular design for easy expansion
+  * Modular design for easy expansion
   
-  Currently implements Patient → Person conversion. To extend:
+  * Currently implements Patient → Person conversion. To extend:
   
-  Add more OMOP tables in database.ts
+  * Add more OMOP tables in database.ts
   
-  Create new conversion methods in converter.ts
+  * Create new conversion methods in converter.ts
   
-  Add schemas for other FHIR resources
+  * Add schemas for other FHIR resources
   
-  Implement vocabulary mapping service
+  * Implement vocabulary mapping service
 
 
 Added a modern React-based UI with Material-UI components that includes:
