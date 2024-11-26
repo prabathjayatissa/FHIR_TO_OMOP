@@ -16,28 +16,43 @@ User Registration:
   Email and password registration
   
   Password confirmation
+  
   Error handling
+ 
   Navigation to converter after successful registration
+  
   Forgot Password:
 
 Email input for password reset
+  
   Success/error messages
+  
   Link back to login
+
   Reset Password:
 
 New password and confirmation inputs
+  
   Handles reset token from URL
+  
   Redirects to login after successful reset
   
 Enhanced Login:
+  
   Added links to registration and forgot password
+ 
   Improved error handling
+
   Better UI/UX with Material-UI components
+
   Updated Auth Context:
 
 Added password reset functions
+ 
   Improved type safety
+ 
   Better error handling
+  
   The application now has a complete authentication flow with proper validation and error handling. Users can register, login, reset their password, and securely access the converter.
 
 
