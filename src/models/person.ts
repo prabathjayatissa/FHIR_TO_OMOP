@@ -9,5 +9,4 @@ export const PersonSchema = z.object({
   person_source_value: z.string(),
   gender_source_value: z.string()
 });
-
 export type Person = z.infer<typeof PersonSchema>;
