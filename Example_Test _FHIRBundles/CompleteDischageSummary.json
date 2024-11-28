@@ -19,6 +19,7 @@
           "birthDate": "1980-11-05"
         }
       },
+    
       {
         "fullUrl": "urn:uuid:encounter2",
         "resource": {
