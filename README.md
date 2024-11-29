@@ -13,7 +13,7 @@
 
 Created a modular Node.js/TypeScript program that converts FHIR data to OMOP CDM format.
 
-User Registration:
+## User Registration:
 
 *  Email and password registration
   
@@ -23,7 +23,7 @@ User Registration:
  
 *  Navigation to converter after successful registration
   
-  Forgot Password:
+ ## Forgot Password:
 
   * Email input for password reset
   
@@ -31,7 +31,7 @@ User Registration:
   
   * Link back to login
 
-  Reset Password:
+##  Reset Password:
 
 * New password and confirmation inputs
   
@@ -39,7 +39,7 @@ User Registration:
   
   * Redirects to login after successful reset
   
-Enhanced Login:
+## Enhanced Login:
   
   * Added links to registration and forgot password
  
@@ -47,7 +47,7 @@ Enhanced Login:
 
   * Better UI/UX with Material-UI components
 
-  Updated Auth Context:
+##  Updated Auth Context:
 
 * Added password reset functions
  
