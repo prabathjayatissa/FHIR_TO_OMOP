@@ -1,4 +1,4 @@
-uFHIR to OMOP Conversion
+# FHIR to OMOP Conversion
 
 ![Screenshot 2024-11-25 at 10 07 09](https://github.com/user-attachments/assets/ee6ebda3-7098-47cf-9777-25ea6fc9dc66)
 
