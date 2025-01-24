@@ -5,7 +5,6 @@ interface ConversionStatusProps {
   error?: string;
 }
 
-
 export function ConversionStatus({ loading, error }: ConversionStatusProps) {
   if (loading) {
     return (
