@@ -17,6 +17,7 @@ import { parseBirthDate } from './utils/date.js';
 export class FhirToOmopConverter {
   constructor(private db: Database) {}
 
+
   async convertBundle(fhirBundle: unknown) {
     const bundle = FhirBundleSchema.parse(fhirBundle);
     const results: Record<string, any> = {};
