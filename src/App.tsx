@@ -11,7 +11,7 @@ import { useAuth } from './contexts/AuthContext';
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { currentUser } = useAuth();
   return currentUser ? <>{children}</> : <Navigate to="/login" />;
-}
+} 
 
 export default function App() {
   return (
